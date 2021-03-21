@@ -39,15 +39,15 @@
 
 		<div class="form-group">
 			<label for="att_unit_quanti">Unit:</label>
-			<input type="text" class="form-control" id="att_unit_quanti" placeholder="Unit">
+			<input type="text" class="form-control" id="att_unit_quanti" placeholder="Unit" autocomplete="off" onpaste="return false;">
 		</div>
 		<div class="form-group">
 			<label for="att_value_min_quanti">Min value:</label>
-			<input type="text" class="form-control" id="att_value_min_quanti" placeholder="Value">
+			<input type="text" class="form-control" id="att_value_min_quanti" placeholder="Value" autocomplete="off" onpaste="return false;">
 		</div>
 		<div class="form-group">
 			<label for="att_value_max_quanti">Max value:</label>
-			<input type="text" class="form-control" id="att_value_max_quanti" placeholder="Value">
+			<input type="text" class="form-control" id="att_value_max_quanti" placeholder="Value" autocomplete="off" onpaste="return false;">
 		</div>
 		<div class="form-group">
 			<label for="att_method_quanti">Method:</label>
@@ -76,7 +76,7 @@
 
 		<div class="form-group">
 			<label for="att_value_min_quali">Least preferred value:</label>
-			<input type="text" class="form-control" id="att_value_min_quali" placeholder="Worst value">
+			<input type="text" class="form-control" id="att_value_min_quali" placeholder="Worst value" autocomplete="off" onpaste="return false;">
 		</div>
 		
 		<div class="form-group">
@@ -84,13 +84,13 @@
 				<input type="button" class="btn btn-default" id="add_value_med_quali" value="Add an item"/>   
 				<input type="button" class="btn btn-default" id="del_value_med_quali" value="Delete last item"/>
 				<ol id="list_med_values_quali">
-					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_quali_1" placeholder='Intermediary Value 1'/></li>
+					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_quali_1" placeholder='Intermediary Value 1' autocomplete="off" onpaste="return false;"/></li>
 				</ol>
 		</div>
 		
 		<div class="form-group">
 			<label for="att_value_max_quali">Most preferred value:</label>
-			<input type="text" class="form-control" id="att_value_max_quali" placeholder="Best value">
+			<input type="text" class="form-control" id="att_value_max_quali" placeholder="Best value" autocomplete="off" onpaste="return false;">
 		</div>
 			
 		<button type="submit" class="btn btn-success" id="submit_quali">Submit</button>
@@ -121,8 +121,8 @@ function verifierCaracteres(event) {
 	}
 			
 };
-$("#quantiname").append('<input type="text" class="form-control" id="att_name_quanti" placeholder="Name" onkeypress="verifierCaracteres(event); return false;" />');
-$("#qualiname").append('<input type="text" class="form-control" id="att_name_quali" placeholder="Name" onkeypress="verifierCaracteres(event); return false;" />');
+$("#quantiname").append('<input type="text" class="form-control" id="att_name_quanti" placeholder="Name" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" onpaste="return false;" />');
+$("#qualiname").append('<input type="text" class="form-control" id="att_name_quali" placeholder="Name" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" onpaste="return false;" />');
 /////////////////////////////////////////////////////////////////////////////////////////
 // Fonctions pour ajouter/supprimer des zones de texte pour les valeurs intermédiaires //
 /////////////////////////////////////////////////////////////////////////////////////////
