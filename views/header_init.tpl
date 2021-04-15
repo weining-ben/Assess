@@ -1,3 +1,4 @@
+%include('js.tpl')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,7 +76,6 @@
                     </li>
                     <li class="export">
                         <button id='export_xls'><i class="fa fa-fw fa-upload"></i>Click to export Excel</button>
-                        %include('js.tpl')
                         <script src="{{ get_url('static', path='js/export.js') }}"></script>>
                     </li>
 					
