@@ -794,10 +794,10 @@
 				if (nombre >= 0 && signe==true) {
 					if (dpl==false) {
 						if (nombre > 999) {
-							return ("+" + nombre.toExponential(settings.decimals_equations)).replace("e+", "\\times10^{")+"}";
+							return ("+" + nombre.toExponential(settings.decimals_equations)).replace("e+", "\\cdot10^{")+"}";
 						}
 						else if (nombre < 0.01) {
-							return ("+" + nombre.toExponential(settings.decimals_equations)).replace("e-", "\\times10^{-")+"}";
+							return ("+" + nombre.toExponential(settings.decimals_equations)).replace("e-", "\\cdot10^{-")+"}";
 						}
 						else {
 							return "+" + nombre.toPrecision(settings.decimals_equations);
@@ -809,10 +809,10 @@
 				} else {
 					if (dpl==false) {
 						if (Math.abs(nombre) > 999) {
-							return String(nombre.toExponential(settings.decimals_equations)).replace("e+","\\times10^{")+"}";
+							return String(nombre.toExponential(settings.decimals_equations)).replace("e+","\\cdot10^{")+"}";
 						}
 						else if (Math.abs(nombre) < 0.01) {
-							return String(nombre.toExponential(settings.decimals_equations)).replace("e-", "\\times10^{-")+"}";
+							return String(nombre.toExponential(settings.decimals_equations)).replace("e-", "\\cdot10^{-")+"}";
 						}
 						else {
 							return nombre.toPrecision(settings.decimals_equations);
@@ -924,14 +924,14 @@
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#401539">Exponential</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 							var copie = reduce_signe(data[i][key]['a']) + "*exp(" + reduce_signe(-data[i][key]['b']) + name +")" + reduce_signe(data[i][key]['c']);
-							var render = reduce_signe(data[i][key]['a'],false, false) + 'e^{' + reduce_signe(-data[i][key]['b'],false) + name +'}' + reduce_signe(data[i][key]['c'],false);
+							var render = reduce_signe(data[i][key]['a'],false, false) + "\\cdot " + "e^{" + reduce_signe(-data[i][key]['b'],false) + '\\cdot ' + name +'}' + reduce_signe(data[i][key]['c'],false);
 							var excel = reduce_signe(data[i][key]['a']) + "*EXP(" + reduce_signe(-data[i][key]['b']) + "*"+ name+ ")" + reduce_signe(data[i][key]['c']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'log'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9585A">Logarithmic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 							var copie = reduce_signe(data[i][key]['a']) + "*log(" + reduce_signe(data[i][key]['b']) + name + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + "\\log(" + reduce_signe(data[i][key]['b'], false, false) + assess_session["attributes"][0]["name"] + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false);
+							var render = reduce_signe(data[i][key]['a'], false, false) + '\\cdot ' + "\\log(" + reduce_signe(data[i][key]['b'], false, false)+ '\\cdot ' + assess_session["attributes"][0]["name"] + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false);
 							console.log(assess_session)
 							console.log(name)
 							var excel = reduce_signe(data[i][key]['a']) + "*LN(" + reduce_signe(data[i][key]['b']) + name + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
@@ -940,29 +940,29 @@
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#6DA63C">Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 							var copie = reduce_signe(data[i][key]['a']) + "*(pow("+ name + "," + (1 - data[i][key]['b']) + ")-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + "\\frac{"+ name +"^{" + reduce_signe(1 - data[i][key]['b'], false) + "}-1}{" + reduce_signe(1 - data[i][key]['b'], false) + "}" + reduce_signe(data[i][key]['c'], false);
+							var render = reduce_signe(data[i][key]['a'], false, false) +"\\cdot " + "\\frac{"+ name +"^{" + reduce_signe(1 - data[i][key]['b'], false) + "}-1}{" + reduce_signe(1 - data[i][key]['b'], false) + "}" + reduce_signe(data[i][key]['c'], false);
 							var excel = reduce_signe(data[i][key]['a']) + "*("+ name +"^" + (1 - data[i][key]['b']) + "-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'quad'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#458C8C">Quadratic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 							var copie = reduce_signe(data[i][key]['c']) + "*"+ name  + reduce_signe(-data[i][key]['b']) + "*pow("+name+",2)" + reduce_signe(data[i][key]['a']);
-							var render = reduce_signe(data[i][key]['c'], false, false) + name + reduce_signe(-data[i][key]['b'], false) + name +"^{2}" + reduce_signe(data[i][key]['a'], false);
+							var render = reduce_signe(data[i][key]['c'], false, false) +"\\cdot " + name + reduce_signe(-data[i][key]['b'], false) +"\\cdot " + name +"^{2}" + reduce_signe(data[i][key]['a'], false);
 							var excel = reduce_signe(data[i][key]['c']) + "*"+ name + reduce_signe(-data[i][key]['b']) + "*"+ name + "^2" + reduce_signe(data[i][key]['a']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'lin'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9B504">Linear</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 							var copie = reduce_signe(data[i][key]['a']) + "*"+ name + reduce_signe(data[i][key]['b']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + name + reduce_signe(data[i][key]['b'], false);
+							var render = reduce_signe(data[i][key]['a'], false, false) +"\\cdot " + name + reduce_signe(data[i][key]['b'], false);
 							var excel = reduce_signe(data[i][key]['a']) + "*"+name + reduce_signe(data[i][key]['b']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'expo-powerr'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#26C4EC">Expo-Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 							var copie = reduce_signe(data[i][key]['a']) + "+exp(-(" + reduce_signe(data[i][key]['b']) + ")*pow("+name+"," + reduce_signe(data[i][key]['c']) + "))" ;
-							var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(" + reduce_signe(-data[i][key]['b'], false, false) + "*"+name+ "^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
-							var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")*"+name+"^" + reduce_signe(data[i][key]['c']) + ")" ;
+							var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(" + reduce_signe(-data[i][key]['b'], false, false) + "\\cdot "+name+ "^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
+							var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")"+name+"^" + reduce_signe(data[i][key]['c']) + ")" ;
 							addTextForm(div_function, copie, render, key, excel);
 						}
 					};
