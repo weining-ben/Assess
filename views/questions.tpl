@@ -21,9 +21,12 @@
 <div id="charts">
 	<h2>Select the utility function you want to use</h2>
 </div>
+<div id="charts_quali">
+	<h2>Select your choice </h2>
+</div>
 
-
-
+<div id= "retour_quali" > <button type="button" class="btn btn-default comeback_quali" id = "update"> Go to main page </button> 
+</div>
 <div id= "attribute_name"></div>
 <div id ="nouveaubloc"></div>
 
@@ -66,7 +69,8 @@
 		$('#nouveaubloc').hide();
 		$('#choix_fonction').hide();
 		$('#attribute_name').hide();
-		
+		$('#charts_quali').hide();
+		$('#retour_quali').hide();
 		
 		
 		var assess_session = JSON.parse(localStorage.getItem("assess_session")),
@@ -113,25 +117,18 @@
 			
 			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.mode=="Normal"?1:0)+'</td></tr></table></td>';
 			if (attribute.type=="Quantitative") {
-				if ( attribute.questionnaire.number > 0) {
-					if (attribute.val_med.length == attribute.questionnaire.number){
-						text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button>';
-						text_table += '<button type="button" class="btn btn-default btn-xs" id="excel_' + i + '">export to Excel</button></td>';
-					}
-					else {
-						text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button>';
-					};
+				if (attribute.questionnaire.number > 0) {
+					text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button></td>';
 				} else {
-					text_table += '<td>No assessment yet ';
+					text_table += '<td>No assessment yet</td>';
 				};
 			} else {
 				if (attribute.questionnaire.number === attribute.val_med.length) {
-					text_table += '<td>';
+					text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quali" id="u_' + attribute.name + '">result</button></td>';
 				} else {
-					text_table += '<td>Please assess all the medium values ';
+					text_table += '<td>Please assess all the medium values</td>';
 				};
 			};
-			
 			
 			text_table += '<td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 			$('#table_attributes').append(text_table);
@@ -140,8 +137,6 @@
 					if (confirm("Are you sure you want to delete all the assessments for "+assess_session.attributes[_i].name+"?") == false) {
 							return
 					};
-					assess_session.attributes[_i].numero=10000;
-					assess_session.attributes[_i].fonction='';
 					assess_session.attributes[_i].questionnaire = {
 							'number': 0,
 							'points': {},
@@ -151,14 +146,6 @@
 					localStorage.setItem("assess_session", JSON.stringify(assess_session));
 					//refresh the page
 					window.location.reload();
-				});
-			})(i);
-			(function(_i) {
-				$('#excel_' + _i).click(function() {
-					var data_2_export = JSON.stringify({"attributes":[assess_session.attributes[_i]], "k_calculus":[]})
-					$.post('ajax', '{"type":"export_xlsx", "data":'+ data_2_export+'}', function(data) {
-						document.location = "export_download/"+data;
-					});
 				});
 			})(i);
 			
@@ -200,7 +187,7 @@
 				
 					json_2_send["points"] = points;
 					
-					if (choice != ''){
+					
 					$.post('ajax', JSON.stringify(json_2_send), function (data) {
 						$.post('ajax', JSON.stringify({
 								"type": "svgg",
@@ -211,7 +198,6 @@
 								"width": 2.5,
 								"choice":choice
 							}), function (data2) {
-								$('#graph_choisi' + _i).append('<div>You chose ' +choice+ '</div>');
 								$('#graph_choisi'+ _i).append(data2);
 								
 							
@@ -219,7 +205,6 @@
 					
 							});
 						});
-						};
 					}; };
 				};
 			};
@@ -893,44 +878,44 @@
 						if (key == 'exp'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#401539">Exponential</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "*exp(" + reduce_signe(-data[i][key]['b']) + "("name"+" + delta +"))" + reduce_signe(data[i][key]['c']);
-							var render = reduce_signe(data[i][key]['a'],false, false) + 'e^{' + reduce_signe(-data[i][key]['b'],false) + '('name'+' + delta + ')}' + reduce_signe(data[i][key]['c'],false);
-							var excel = reduce_signe(data[i][key]['a']) + "*EXP(" + reduce_signe(-data[i][key]['b']) + "*("name"+" + delta + "))" + reduce_signe(data[i][key]['c']);
+							var copie = reduce_signe(data[i][key]['a']) + "*exp(" + reduce_signe(-data[i][key]['b']) + "(x+" + delta +"))" + reduce_signe(data[i][key]['c']);
+							var render = reduce_signe(data[i][key]['a'],false, false) + 'e^{' + reduce_signe(-data[i][key]['b'],false) + '(x+' + delta + ')}' + reduce_signe(data[i][key]['c'],false);
+							var excel = reduce_signe(data[i][key]['a']) + "*EXP(" + reduce_signe(-data[i][key]['b']) + "*(x+" + delta + "))" + reduce_signe(data[i][key]['c']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'log') {
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9585A">Logarithmic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "*log(" + reduce_signe(data[i][key]['b']) + "("name"+" + delta+"))" + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + "\\log(" + reduce_signe(data[i][key]['b'], false, false) + "("name"+"+ delta + ")" + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false);
-							var excel = reduce_signe(data[i][key]['a']) + "*LN(" + reduce_signe(data[i][key]['b']) + "("name"+"+ delta + ")" + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
+							var copie = reduce_signe(data[i][key]['a']) + "*log(" + reduce_signe(data[i][key]['b']) + "(x+" + delta+"))" + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
+							var render = reduce_signe(data[i][key]['a'], false, false) + "\\log(" + reduce_signe(data[i][key]['b'], false, false) + "(x+"+ delta + ")" + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false);
+							var excel = reduce_signe(data[i][key]['a']) + "*LN(" + reduce_signe(data[i][key]['b']) + "(x+"+ delta + ")" + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'pow') {
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#6DA63C">Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "*(pow(("name"+" + delta + ")," + (1 - data[i][key]['b']) + ")-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + "\\frac{("name"+" + delta + ")^{" + reduce_signe(1 - data[i][key]['b'], false) + "}-1}{" + reduce_signe(1 - data[i][key]['b'], false) + "}" + reduce_signe(data[i][key]['c'], false);
-							var excel = reduce_signe(data[i][key]['a']) + "*(("name"+" + delta + ")^" + (1 - data[i][key]['b']) + "-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
+							var copie = reduce_signe(data[i][key]['a']) + "*(pow((x+" + delta + ")," + (1 - data[i][key]['b']) + ")-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
+							var render = reduce_signe(data[i][key]['a'], false, false) + "\\frac{(x+" + delta + ")^{" + reduce_signe(1 - data[i][key]['b'], false) + "}-1}{" + reduce_signe(1 - data[i][key]['b'], false) + "}" + reduce_signe(data[i][key]['c'], false);
+							var excel = reduce_signe(data[i][key]['a']) + "*((x+" + delta + ")^" + (1 - data[i][key]['b']) + "-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'quad'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#458C8C">Quadratic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['c']) + "*("name"+"+delta+")" + reduce_signe(-data[i][key]['b']) + "*pow(("name"+"+delta+"),2)" + reduce_signe(data[i][key]['a']);
-							var render = reduce_signe(data[i][key]['c'], false, false) + "("name"+"+delta+")" + reduce_signe(-data[i][key]['b'], false) + "("name"+"+delta+")^{2}" + reduce_signe(data[i][key]['a'], false);
-							var excel = reduce_signe(data[i][key]['c']) + "*("name"+" + delta + ")^" + reduce_signe(-data[i][key]['b']) + "*("name"+" + delta + ")^2" + reduce_signe(data[i][key]['a']);
+							var copie = reduce_signe(data[i][key]['c']) + "*(x+"+delta+")" + reduce_signe(-data[i][key]['b']) + "*pow((x+"+delta+"),2)" + reduce_signe(data[i][key]['a']);
+							var render = reduce_signe(data[i][key]['c'], false, false) + "(x+"+delta+")" + reduce_signe(-data[i][key]['b'], false) + "(x+"+delta+")^{2}" + reduce_signe(data[i][key]['a'], false);
+							var excel = reduce_signe(data[i][key]['c']) + "*(x+" + delta + ")^" + reduce_signe(-data[i][key]['b']) + "*(x+" + delta + ")^2" + reduce_signe(data[i][key]['a']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'lin') {
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9B504">Linear</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "*("name"+" + delta + ")" + reduce_signe(data[i][key]['b']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + "("name"+" + delta + ")" + reduce_signe(data[i][key]['b'], false);
-							var excel = reduce_signe(data[i][key]['a']) + "*("name"+" + delta + ")" + reduce_signe(data[i][key]['b']);
+							var copie = reduce_signe(data[i][key]['a']) + "*(x+" + delta + ")" + reduce_signe(data[i][key]['b']);
+							var render = reduce_signe(data[i][key]['a'], false, false) + "(x+" + delta + ")" + reduce_signe(data[i][key]['b'], false);
+							var excel = reduce_signe(data[i][key]['a']) + "*(x+" + delta + ")" + reduce_signe(data[i][key]['b']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'expo-powerr'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#26C4EC">Expo-Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "+exp(-(" + reduce_signe(data[i][key]['b']) + ")*pow(("name"+"+delta+")," + reduce_signe(data[i][key]['c']) + "))" ;
-							var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(" + reduce_signe(-data[i][key]['b'], false, false) + "*("name"+"+delta+")^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
-							var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")*("name"+"+delta+")^" + reduce_signe(data[i][key]['c']) + ")" ;
+							var copie = reduce_signe(data[i][key]['a']) + "+exp(-(" + reduce_signe(data[i][key]['b']) + ")*pow((x+"+delta+")," + reduce_signe(data[i][key]['c']) + "))" ;
+							var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(" + reduce_signe(-data[i][key]['b'], false, false) + "*(x+"+delta+")^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
+							var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")*(x+"+delta+")^" + reduce_signe(data[i][key]['c']) + ")" ;
 							addTextForm(div_function, copie, render, key, excel);
 						}
 					
@@ -938,44 +923,46 @@
 						if (key == 'exp'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#401539">Exponential</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "*exp(" + reduce_signe(-data[i][key]['b']) + name")" + reduce_signe(data[i][key]['c']);
-							var render = reduce_signe(data[i][key]['a'],false, false) + 'e^{' + reduce_signe(-data[i][key]['b'],false) + name'}' + reduce_signe(data[i][key]['c'],false);
-							var excel = reduce_signe(data[i][key]['a']) + "*EXP(" + reduce_signe(-data[i][key]['b']) + "*"name")" + reduce_signe(data[i][key]['c']);
+							var copie = reduce_signe(data[i][key]['a']) + "*exp(" + reduce_signe(-data[i][key]['b']) + name +")" + reduce_signe(data[i][key]['c']);
+							var render = reduce_signe(data[i][key]['a'],false, false) + 'e^{' + reduce_signe(-data[i][key]['b'],false) + name +'}' + reduce_signe(data[i][key]['c'],false);
+							var excel = reduce_signe(data[i][key]['a']) + "*EXP(" + reduce_signe(-data[i][key]['b']) + "*"+ name+ ")" + reduce_signe(data[i][key]['c']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'log'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9585A">Logarithmic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 							var copie = reduce_signe(data[i][key]['a']) + "*log(" + reduce_signe(data[i][key]['b']) + name + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + "\\log(" + reduce_signe(data[i][key]['b'], false, false) + name + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false);
+							var render = reduce_signe(data[i][key]['a'], false, false) + "\\log(" + reduce_signe(data[i][key]['b'], false, false) + assess_session["attributes"][0]["name"] + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false);
+							console.log(assess_session)
+							console.log(name)
 							var excel = reduce_signe(data[i][key]['a']) + "*LN(" + reduce_signe(data[i][key]['b']) + name + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'pow'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#6DA63C">Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "*(pow("name"," + (1 - data[i][key]['b']) + ")-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
-							var render = reduce_signe(data[i][key]['a'], false, false) + "\\frac{"name"^{" + reduce_signe(1 - data[i][key]['b'], false) + "}-1}{" + reduce_signe(1 - data[i][key]['b'], false) + "}" + reduce_signe(data[i][key]['c'], false);
-							var excel = reduce_signe(data[i][key]['a']) + "*("name"^" + (1 - data[i][key]['b']) + "-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
+							var copie = reduce_signe(data[i][key]['a']) + "*(pow("+ name + "," + (1 - data[i][key]['b']) + ")-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
+							var render = reduce_signe(data[i][key]['a'], false, false) + "\\frac{"+ name +"^{" + reduce_signe(1 - data[i][key]['b'], false) + "}-1}{" + reduce_signe(1 - data[i][key]['b'], false) + "}" + reduce_signe(data[i][key]['c'], false);
+							var excel = reduce_signe(data[i][key]['a']) + "*("+ name +"^" + (1 - data[i][key]['b']) + "-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'quad'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#458C8C">Quadratic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['c']) + "*"name"" + reduce_signe(-data[i][key]['b']) + "*pow("name",2)" + reduce_signe(data[i][key]['a']);
-							var render = reduce_signe(data[i][key]['c'], false, false) + name + reduce_signe(-data[i][key]['b'], false) + name"^{2}" + reduce_signe(data[i][key]['a'], false);
-							var excel = reduce_signe(data[i][key]['c']) + "*"name + reduce_signe(-data[i][key]['b']) + "*"name"^2" + reduce_signe(data[i][key]['a']);
+							var copie = reduce_signe(data[i][key]['c']) + "*"+ name  + reduce_signe(-data[i][key]['b']) + "*pow("+name+",2)" + reduce_signe(data[i][key]['a']);
+							var render = reduce_signe(data[i][key]['c'], false, false) + name + reduce_signe(-data[i][key]['b'], false) + name +"^{2}" + reduce_signe(data[i][key]['a'], false);
+							var excel = reduce_signe(data[i][key]['c']) + "*"+ name + reduce_signe(-data[i][key]['b']) + "*"+ name + "^2" + reduce_signe(data[i][key]['a']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'lin'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9B504">Linear</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "*"name"" + reduce_signe(data[i][key]['b']);
+							var copie = reduce_signe(data[i][key]['a']) + "*"+ name + reduce_signe(data[i][key]['b']);
 							var render = reduce_signe(data[i][key]['a'], false, false) + name + reduce_signe(data[i][key]['b'], false);
-							var excel = reduce_signe(data[i][key]['a']) + "*"name"" + reduce_signe(data[i][key]['b']);
+							var excel = reduce_signe(data[i][key]['a']) + "*"+name + reduce_signe(data[i][key]['b']);
 							addTextForm(div_function, copie, render, key, excel);
 						} else if (key == 'expo-powerr'){
 						
 							var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#26C4EC">Expo-Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
-							var copie = reduce_signe(data[i][key]['a']) + "+exp(-(" + reduce_signe(data[i][key]['b']) + ")*pow("name"," + reduce_signe(data[i][key]['c']) + "))" ;
-							var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(" + reduce_signe(-data[i][key]['b'], false, false) + "*"name"^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
-							var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")*"name"^" + reduce_signe(data[i][key]['c']) + ")" ;
+							var copie = reduce_signe(data[i][key]['a']) + "+exp(-(" + reduce_signe(data[i][key]['b']) + ")*pow("+name+"," + reduce_signe(data[i][key]['c']) + "))" ;
+							var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(" + reduce_signe(-data[i][key]['b'], false, false) + "*"+name+ "^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
+							var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")*"+name+"^" + reduce_signe(data[i][key]['c']) + ")" ;
 							addTextForm(div_function, copie, render, key, excel);
 						}
 					};
@@ -1021,7 +1008,6 @@
 					"width": 2.5,
 					"choice":choice,
 				}), function(data2) {
-					$('#graph_choisi' + indice).append('<div>You chose ' +choice+ '</div>');
 					$('#graph_choisi' + indice).append('<div>' + data2 + '</div>');
 				});
 			}
@@ -1436,71 +1422,28 @@
 			
 					$('#choix_fonction').show();
 					$('#ton_choix').empty();
-					
-				
-					$('#update').hide();
-					
 					var choice = this.value;
-					var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-					var num = assess_session.attributes[indice].numero;
 					$('#ton_choix').append("You chose " + choice);
-					
+					var assess_session = JSON.parse(localStorage.getItem("assess_session"));
 					
 					assess_session.attributes[indice].fonction = choice;
-					
+					var num = assess_session.attributes[indice].numero;
 					if (num!=10000){
-					if (choice == 'quadratic'){
-						
-						if (data['data'][num]['quad'] == undefined) {
-							
-							assess_session.attributes[indice].fonction = '';
-							$('#fonction_choisie').empty();
-							$('#graph_choisi'+ indice).empty();
-							$('#graph_choisi'+ indice).hide();
-							$('#ton_choix').empty();
-							$('#fonction_choisie').append("Quadratic can't be calculated for the points you chose");
-							$('#ton_choix').append("Choose another function or other points");
-							$('#update').hide();
-							$('#functions').hide();
-							
-							
-						};
-						if (data['data'][num]['quad'] != undefined) {
-								
-								$('#functions').show().empty();
-								$('#fonction_choisie').show().empty();
-					
-								$('#graph_choisi'+indice).show().empty();
-						
-							
-								addGraph(num, data['data'], val_min, val_max, choice);
-						
-								addGraph3(num, data['data'], val_min, val_max, choice);
-								addFunctions(num, data['data'],val_min,choice);
-								$('#update').show();
-							
-						
-						};
-					};
-					if (choice != 'quadratic'){
-							
-					
-						
+						$('#main_graph').show().empty();
 						$('#functions').show().empty();
 						$('#fonction_choisie').show().empty();
 					
 						$('#graph_choisi'+indice).show().empty();
 						
-						
+						var h =data['data'];
+						assess_session.attributes[indice].pts = h[num];
 						addGraph(num, data['data'], val_min, val_max, choice);
 						
 						addGraph3(num, data['data'], val_min, val_max, choice);
 						addFunctions(num, data['data'],val_min,choice);
-						$('#update').show();
-					};
-					};
+						};
 					localStorage.setItem("assess_session", JSON.stringify(assess_session));
-					
+						
 					});
 					
 			
@@ -1511,11 +1454,6 @@
 					
 					var choice = assess_session.attributes[indice].fonction;
 					assess_session.attributes[indice].numero = Number(this.value);
-					
-					
-					
-					$('#update').hide();
-					
 					$('#fonctions_choisies').show().empty();
 					document.getElementById('check_log').checked = true;
 					document.getElementById('check_exp').checked = true;
@@ -1527,49 +1465,18 @@
 					L=[1,1,1,1,1];
 					addGraph2(Number(this.value), data['data'], val_min, val_max,LISTE);
 					if (choice != ''){
-						if (choice == 'quadratic'){
+						$('#main_graph').show().empty();
+						$('#functions').show().empty();
+						$('#fonction_choisie').show().empty();
 						
-							if (data['data'][Number(this.value)]['quad'] == undefined) {
-								
-								assess_session.attributes[indice].fonction = '';
-								$('#fonction_choisie').empty();
-								$('#graph_choisi'+ indice).empty();
-								$('#graph_choisi'+ indice).hide();
-								$('#ton_choix').empty();
-								$('#fonction_choisie').append("Quadratic can't be calculated for the points you chose");
-								$('#ton_choix').append("Choose another function or other points");
-								$('#update').hide();
-								$('#functions').hide();
-							};
-							if (data['data'][Number(this.value)]['quad'] != undefined) {
-								
-								$('#functions').show().empty();
-								$('#fonction_choisie').show().empty();
+						$('#graph_choisi'+indice).show().empty();
 						
-								$('#graph_choisi'+indice).show().empty();
+						var h =data['data'];
+						assess_session.attributes[indice].pts = h[Number(this.value)];
+						addGraph(Number(this.value), data['data'], val_min, val_max, choice);
 						
-								addGraph(Number(this.value), data['data'], val_min, val_max, choice);
-						
-								addGraph3(Number(this.value), data['data'], val_min, val_max, choice);
-								addFunctions(Number(this.value), data['data'],val_min,choice);
-								$('#update').show();
-							};
-						};
-						if (choice != 'quadratic'){
-							
-							$('#functions').show().empty();
-							$('#fonction_choisie').show().empty();
-						
-							$('#graph_choisi'+indice).show().empty();
-						
-							
-						
-							addGraph(Number(this.value), data['data'], val_min, val_max, choice);
-						
-							addGraph3(Number(this.value), data['data'], val_min, val_max, choice);
-							addFunctions(Number(this.value), data['data'],val_min,choice);
-							$('#update').show();
-						};
+						addGraph3(Number(this.value), data['data'], val_min, val_max, choice);
+						addFunctions(Number(this.value), data['data'],val_min,choice);
 						};
 					localStorage.setItem("assess_session", JSON.stringify(assess_session));
 						
@@ -1580,7 +1487,7 @@
 					
 					$('#attribute_name').hide();
 					$('#charts').hide();
-					
+					$('#main_graph').hide();
 					$('#functions').hide();
 					$('#nouveaubloc').hide();
 					$('#tableau_fonctions').hide();
@@ -1598,7 +1505,81 @@
 			});
 		});
 		
+		/// When you click on a QUALITATIVE utility function button
+		$('.calc_util_quali').click(function() {
+			// we store the name of the attribute
+			var utility_name = $(this).attr('id').slice(2);
+			
+			// we delete the select div
+			$('#select').hide();
+			//$('#attribute_name').show().html(question_name.toUpperCase());
+			// which index is it ?
+			var indice;
+			for (var j = 0; j < assess_session.attributes.length; j++) {
+				if (assess_session.attributes[j].name == utility_name) {
+					indice = j;
+				}
+			}
+			var val_min = assess_session.attributes[indice].val_min,
+				val_max = assess_session.attributes[indice].val_max,
+				val_med = assess_session.attributes[indice].val_med,
+				list_names = [].concat(val_min, val_med, val_max),
+				points = assess_session.attributes[indice].questionnaire.points,
+				list_points = [];
+			points[val_min] = 0; //On force l'utilité de la pire à 0
+			points[val_max] = 1; //On force l'utilité de la meilleure à 1
+			
+			for (var ii=0, len=list_names.length; ii<len; ii++) {
+				list_points.push(points[list_names[ii]]);
+			};
+			
+			
+			console.log(list_points)
+			console.log(list_names)
+			$('#charts_quali').show();
+			$('#charts_quali').append('<table id="curves_choice_quali" class="table"><thead><tr><th>Choices</th></tr></thead>');
+			$('#curves_choice_quali').append('<tbody><tr><td style="text-align:center"><input class="Table_choice" type="radio" name="choice"  value="table">Table</td>')
+			$('#charts_quali').append("</table><div id='data_show'></div>")
+			$('#retour_quali').show();
+			
+			function table_choice() {
+				
+				$('#main_graph').hide().empty();
+				$('#functions').hide().empty();
+				$('#data_show').show().empty();
+				$('#data_show').append('<table   style="  width:100%;"> <thead><tr><th>value</th><th>utility</th></tr></thead><tbody id="table_info"></tbody>');
+				for (var i = 0; i < list_points.length; i++) 
+				{
+				$('#table_info').append('<tr><td>'+list_names[i]+'</td><td>'+list_points[i]+'</td></tr>');
+				};
+			}
+			$('.Table_choice').on('click',table_choice);
+					
+		});
 		
+		$('.comeback_quali').click(function() {
+					
+					
+					$('#attribute_name').hide();
+					$('#charts').hide();
+					$('#main_graph').hide();
+					$('#functions').hide();
+					$('#nouveaubloc').hide();
+					$('#tableau_fonctions').hide();
+					$('#choix_fonction').hide();
+					$('#retour_quali').hide();
+					$('#select').show();
+					
+					$('#charts_quali').empty();
+					$('#charts_quali').hide();
+					$('#fonction_choisie').empty();
+					$('#fonctions_choisies').empty();
+					
+					
+					
+					
+					});
+				
 		
 	
 	});
