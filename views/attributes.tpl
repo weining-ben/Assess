@@ -415,7 +415,7 @@ $(function() {
 			alert ("Minimum value must be inferior to maximum value");
 		} else if (isThereUnderscore([name, unit], String(val_min), String(val_max))==false) {
 			alert("Please don't write an underscore ( _ ) in your values.\nBut you can put spaces");
-		} else if (!verif(name)) {
+		} else if (!verifName(name)) {
 			alert("Please use only alphanumerical chars in name (non case sensitive)");
 		}
 		
@@ -515,7 +515,7 @@ $(function() {
 			alert("At least one of the values is appearing more than once");
 		} else if (isThereUnderscore(val_med, val_min, val_max)==false) {
 			alert("Please don't write an underscore ( _ ) in your values.\nBut you can put spaces");
-		} else if (!verif(name)) {
+		} else if (!verifName(name)) {
 			alert("Please use only alphanumerical chars in name (non case sensitive)");
 		}
 
