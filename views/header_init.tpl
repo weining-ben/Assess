@@ -75,8 +75,17 @@
                         <a href="{{ get_url('/credits') }}"><i class="fa fa-fw fa-users"></i>Credits</a>
                     </li>
                     <li class="export">
-                        <button id='export_xls'><i class="fa fa-fw fa-upload"></i>Click to export Excel</button>
+
                         <script src="{{ get_url('static', path='js/export.js') }}"></script>>
+                        <style>
+                          button {
+                            background-color: #222222;
+                            color: #eeeeee;
+                            font-size: 14px;
+                            border : 0;
+                          }
+                        </style>
+                        <button type = "button" id='export_xls'><i class="fa fa-fw fa-upload"></i>Click to export all to Excel</button> 
                     </li>
 					
 				</ul>
