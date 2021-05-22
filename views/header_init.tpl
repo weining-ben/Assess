@@ -85,7 +85,7 @@
                             border : 0;
                           }
                         </style>
-                        <button type = "button" id='export_xls'><i class="fa fa-fw fa-upload"></i>Click to export all to Excel</button> 
+                        <button type = "button" id='export_xls'><i class="fa fa-fw fa-upload"></i>Export all Excel</button> 
                     </li>
 					
 				</ul>
