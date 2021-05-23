@@ -80,12 +80,12 @@
                         <style>
                           button {
                             background-color: #222222;
-                            color: #eeeeee;
+                            color: #777777;
                             font-size: 14px;
                             border : 0;
                           }
                         </style>
-                        <button type = "button" id='export_xls'><i class="fa fa-fw fa-upload"></i>Export all Excel</button> 
+                        <button type = "button" id='export_xls'><i class="fa fa-fw fa-upload"></i>Export all to Excel</button> 
                     </li>
 					
 				</ul>
