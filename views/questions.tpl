@@ -804,6 +804,16 @@
 			};
 			json_2_send["points"] = points;
 			console.log(points);
+
+
+			function calculerAvecArrondi(number,arrondi) {
+				///Function qui arrondi avec le nombre de décimales souhaitées
+				///number est un le nombre à arrondir (float)
+				///arrondi est le nombre de décimales (int)
+				return Math.round((number) * Math.pow(10,arrondi)) / Math.pow(10,arrondi);
+			}
+
+
 			function reduce_signe(nombre, dpl=true, signe=true) {
 				console.log("Reduce signe");
 				if (nombre >= 0 && signe==true) {
@@ -815,11 +825,11 @@
 							return ("+" + nombre.toExponential(settings.decimals_equations)).replace("e-", "\\cdot10^{-")+"}";
 						}
 						else {
-							return "+" + nombre.toPrecision(settings.decimals_equations);
+							return "+" + calculerAvecArrondi(nombre,settings.decimals_equations);
 						}
 					}
 					else {
-						return "+" + nombre.toPrecision(settings.decimals_dpl);
+						return "+" + calculerAvecArrondi(nombre,settings.decimals_dpl);
 					}
 				} else {
 					if (dpl==false) {
@@ -830,11 +840,11 @@
 							return String(nombre.toExponential(settings.decimals_equations)).replace("e-", "\\cdot10^{-")+"}";
 						}
 						else {
-							return nombre.toPrecision(settings.decimals_equations);
+							return calculerAvecArrondi(nombre,settings.decimals_equations);
 						}
 					}
 					else {
-						return nombre.toPrecision(settings.decimals_dpl);
+						return calculerAvecArrondi(nombre,settings.decimals_dpl);
 					}
 				}
 			};
