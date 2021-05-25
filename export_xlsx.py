@@ -11,6 +11,11 @@ from functions import *
 import xlsxwriter
 from xlsxwriter.utility import xl_rowcol_to_cell
 
+def formatGenerate(decimal):
+    s = '0.'
+    for i in range(decimal):
+        s += '0'
+    return s
 
 def generate_fichier(data):
 
@@ -20,6 +25,10 @@ def generate_fichier(data):
     classeur = xlsxwriter.Workbook('fichier' + str(r) + '.xlsx')
     # On ajoute une feuille au classeur
 
+    decimal = data['settings']['decimals_equations']
+    formatZero = formatGenerate(decimal)
+
+
     for monAttribut in data['attributes']:
 
         feuille = classeur.add_worksheet(monAttribut['name'])
@@ -28,7 +37,7 @@ def generate_fichier(data):
         format01.set_num_format('0.00')
 
         formatCoeff = classeur.add_format()
-        formatCoeff.set_num_format('0.000000')
+        formatCoeff.set_num_format(formatZero)
 
         formatTitre = classeur.add_format()
         formatTitre.set_bg_color('#C0C0C0')
