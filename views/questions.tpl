@@ -572,7 +572,7 @@
 						min_interval = data.interval[0];
 						max_interval = data.interval[1];
 						gain = data.gain;
-						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_cepv.questions_val_max) - parseFloat(arbre_cepv.questions_val_min) || max_interval - min_interval < 2) {
+						if (max_interval - min_interval <= 0.05 * (parseFloat(arbre_cepv.questions_val_max) - parseFloat(arbre_cepv.questions_val_min)) || (max_interval - min_interval < 2)) {
 							$('#gain').hide();
 							$('#lottery').hide();
 							arbre_cepv.questions_val_mean = gain + ' ' + unit;
