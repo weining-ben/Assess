@@ -69,9 +69,9 @@ def LE(min_interval, max_interval, p, choix, mode):
 
 def CE(valeurmin, valeurmax, gain, choix, mode):
     if mode == 'Reversed':
-        choix = (choix + 1) % 2
+        choix = (choix + 1) % 2 #Inversion du choix
     liste = [valeurmin, valeurmax]
-    # choix = 1 correspond a l equivalent certain (comme pour la PE)
+    # choix = 1 correspond au choix du gain certain (comme pour la PE)
     if choix == 1:
         valeurmax = gain
         gain = round(valeurmin + ((valeurmax - valeurmin) / 4), 0)
