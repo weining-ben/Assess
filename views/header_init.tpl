@@ -79,7 +79,7 @@
                         <script src="{{ get_url('static', path='js/export.js') }}"></script>>
                         <style>
                           button {
-                            background-color: #222222;
+                            background-color: #000000;
                             color: #777777;
                             font-size: 14px;
                             border : 0;
