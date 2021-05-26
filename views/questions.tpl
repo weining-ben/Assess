@@ -483,16 +483,16 @@
 						$('.final_validation').click(function() {
 							var final_gain = parseFloat($('#final_proba').val());
 							var final_utility = arbre_ce.questions_proba_haut * utility_finder(parseFloat(arbre_ce.questions_val_max)) + (1 - arbre_ce.questions_proba_haut) * utility_finder(parseFloat(arbre_ce.questions_val_min));
-							console.log(arbre_ce.questions_proba_haut);
-							console.log(utility_finder(parseFloat(arbre_ce.questions_val_max)));
-							console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
+							//console.log(arbre_ce.questions_proba_haut);
+							//console.log(utility_finder(parseFloat(arbre_ce.questions_val_max)));
+							//console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
 							if (final_gain <= parseFloat(arbre_ce.questions_val_max) && final_gain >= parseFloat(arbre_ce.questions_val_min)) {
 								// we save it
 								assess_session.attributes[indice].questionnaire.points[String(final_gain)]=parseFloat(final_utility);
 								var  point_cepv= Object.keys(assess_session.attributes[indice].questionnaire.points).length-1
 								var  number_cepv = assess_session.attributes[indice].questionnaire.number
-								console.log( point_cepv)
-								console.log( number_cepv)
+								//console.log( point_cepv)
+								//console.log( number_cepv)
 								if ( point_cepv == number_cepv ){
 									assess_session.attributes[indice].questionnaire.number += 1;
 								}
@@ -531,13 +531,19 @@
 					// VARIABLES
 					var min_interval = val_min;
 					var max_interval = val_max;
-					if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 0) {
+					
+					if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 0 && assess_session.attributes[indice].mode == "Normal") {
 						p = 0.25;
 					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 1) {
 						p = 0.5;
-					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 2) {
+					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 2 && assess_session.attributes[indice].mode == "Normal") {
 		                 		p = 0.75;
+					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 0 && assess_session.attributes[indice].mode == "Reversed") {
+		                 		p = 0.75;
+					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 2 && assess_session.attributes[indice].mode == "Reversed") {
+		                 		p = 0.25;
 					}
+
 					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
 					var gain = Math.round(random_proba(L[0], L[1]));
                                       
