@@ -135,8 +135,10 @@ def generate_svg_plot(dictionary, min_, max_, liste_cord, width,liste):
 
 
     ax.scatter(x1, y1, c='k', label="Original Data")
-    for index in range(len(lx)-1):
-        ax.annotate(index+1, xy=(lx[index],ly[index]),xytext=(+10,-10),textcoords='offset points',horizontalalignment='center', verticalalignment='center')
+    
+    for index in range(len(lx)-2):
+        ax.annotate(dictionary['points'][index], xy=(lx[index],ly[index]),xytext=(+10,-10),textcoords='offset points',horizontalalignment='center', verticalalignment='center')
+
     plt.savefig(imgdata, format='svg')
     plt.close()
 
@@ -163,8 +165,8 @@ def generate_svg_plot2(dictionary, min, max, liste_cord, width, choice):
     plt.figure(figsize=(width, width))
     plt.axis([min, max, 0., 1.])
     plt.plot(x1, y1, 'ko', label="Original Data")
-    for index in range(len(lx)-1):
-        plt.annotate(index+1, xy=(lx[index],ly[index]),xytext=(+10,-10),textcoords='offset points',horizontalalignment='center', verticalalignment='center')
+    for index in range(len(lx)-2):
+        plt.annotate(dictionary['points'][index], xy=(lx[index],ly[index]),xytext=(+10,-10),textcoords='offset points',horizontalalignment='center', verticalalignment='center')
     x = np.linspace(min, max, 100)
 
     #translation suivant x des courbes a afficher en cas de valeurs negatives
