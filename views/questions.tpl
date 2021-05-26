@@ -453,11 +453,13 @@
 						};
 					};
 					function treat_answer(data) {
-						min_interval = data.interval[0];
-						max_interval = data.interval[1];
+						min_interval = data.interval[0]; //Gain minimal proposable
+						max_interval = data.interval[1]; //Gain maximum proposable
 						gain = data.gain;
+
+						//arbre_ce.questions_val_max - arbre_ce.quesstions_val_min = intervale de départ
 						
-						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_ce.questions_val_max) - parseFloat(arbre_ce.questions_val_min) || max_interval - min_interval < 2) {
+						if (max_interval - min_interval <= 0.05 * (parseFloat(arbre_ce.questions_val_max) - parseFloat(arbre_ce.questions_val_min)) || (max_interval - min_interval) < 2) { //interval <= 5% de l'interval de départ ou interval < 2
 							$('.choice').hide();
 							arbre_ce.questions_val_mean = gain + ' ' + unit;
 							arbre_ce.update();
