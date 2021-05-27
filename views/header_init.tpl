@@ -78,15 +78,14 @@
 
                         <script src="{{ get_url('static', path='js/export.js') }}"></script>>
                         <style>
-                           .button2 {
+                          button {
                             background-color: #222222;
                             color: #777777;
                             font-size: 14px;
                             border : 0;
                           }
                         </style>
-                        <button type = "button" id='export_xls' class= "button2"><i class="fa fa-fw fa-upload "></i>Export all to Excel</button>
-                                            
+                        <button type = "button" id='export_xls'><i class="fa fa-fw fa-upload"></i>Export all to Excel</button> 
                     </li>
 					
 				</ul>

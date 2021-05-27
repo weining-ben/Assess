@@ -483,16 +483,16 @@
 						$('.final_validation').click(function() {
 							var final_gain = parseFloat($('#final_proba').val());
 							var final_utility = arbre_ce.questions_proba_haut * utility_finder(parseFloat(arbre_ce.questions_val_max)) + (1 - arbre_ce.questions_proba_haut) * utility_finder(parseFloat(arbre_ce.questions_val_min));
-							//console.log(arbre_ce.questions_proba_haut);
-							//console.log(utility_finder(parseFloat(arbre_ce.questions_val_max)));
-							//console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
+							console.log(arbre_ce.questions_proba_haut);
+							console.log(utility_finder(parseFloat(arbre_ce.questions_val_max)));
+							console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
 							if (final_gain <= parseFloat(arbre_ce.questions_val_max) && final_gain >= parseFloat(arbre_ce.questions_val_min)) {
 								// we save it
 								assess_session.attributes[indice].questionnaire.points[String(final_gain)]=parseFloat(final_utility);
 								var  point_cepv= Object.keys(assess_session.attributes[indice].questionnaire.points).length-1
 								var  number_cepv = assess_session.attributes[indice].questionnaire.number
-								//console.log( point_cepv)
-								//console.log( number_cepv)
+								console.log( point_cepv)
+								console.log( number_cepv)
 								if ( point_cepv == number_cepv ){
 									assess_session.attributes[indice].questionnaire.number += 1;
 								}
@@ -531,19 +531,13 @@
 					// VARIABLES
 					var min_interval = val_min;
 					var max_interval = val_max;
-					
-					if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 0 && assess_session.attributes[indice].mode == "Normal") {
+					if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 0) {
 						p = 0.25;
 					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 1) {
 						p = 0.5;
-					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 2 && assess_session.attributes[indice].mode == "Normal") {
+					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 2) {
 		                 		p = 0.75;
-					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 0 && assess_session.attributes[indice].mode == "Reversed") {
-		                 		p = 0.75;
-					} else if (Object.keys(assess_session.attributes[indice].questionnaire.points).length == 2 && assess_session.attributes[indice].mode == "Reversed") {
-		                 		p = 0.25;
 					}
-
 					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
 					var gain = Math.round(random_proba(L[0], L[1]));
                                       
@@ -1120,7 +1114,7 @@
 				$('#tableau_checkbox').append('<table id="checkbox_curves_choice" class="table"><thead><tr><th></th><th> Functions </th></tr></thead></table>');
 				LISTE=['logarithmic','exponential','power','linear', 'exponential-power'];
 					if (data['data'][0]['quad'] !== undefined) {
-						LISTE = ['logarithmic','exponential','power','linear','exponential-power','quadratic'];
+						LISTE = ['logarithmic','exponential','power','linear','quadratic'];
 						};
 				for (var i = 0; i < LISTE.length; i++) {
 					$('#NEWcurves_choice').append('<tr><td><input type="radio" class="ice" name="select2" value=' +LISTE[i]+ '></td><td>' + LISTE[i] + '</td><tr>');
@@ -1144,13 +1138,12 @@
 				$('#checkbox_curves_choice').append('<tr><td><input type="checkbox" class="check_exp" id="check_exp" name="check_exp"></td><td>' + LISTE[1] + '</td><tr>');
 				$('#checkbox_curves_choice').append('<tr><td><input type="checkbox" class="check_pow" id="check_pow" name="check_pow"></td><td>' + LISTE[2] + '</td><tr>');
 				$('#checkbox_curves_choice').append('<tr><td><input type="checkbox" class="check_lin" id="check_lin" name="check_lin"></td><td>' + LISTE[3] + '</td><tr>');
-				$('#checkbox_curves_choice').append('<tr><td><input type="checkbox" class="check_expopow" id="check_expopow" name="check_expopow"></td><td>' + LISTE[4] + '</td><tr>');
-				if (LISTE.length==6){
-					$('#checkbox_curves_choice').append('<tr><td><input type="checkbox" class="check_quad" id="check_quad" name="check_quad"></td><td>' + LISTE[5] + '</td><tr>');
+				if (LISTE.length==5){
+					$('#checkbox_curves_choice').append('<tr><td><input type="checkbox" class="check_quad" id="check_quad" name="check_quad"></td><td>' + LISTE[4] + '</td><tr>');
 				};
 				
 				
-				var L=[1,1,1,1,1,1];
+				var L=[1,1,1,1,1];
 				
 				
 				$("input[type=checkbox][name=check_log]").change(function() {
@@ -1175,11 +1168,8 @@
 								if (L[3] == 1){
 									R.push('linear');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1201,11 +1191,8 @@
 								if (L[3] == 1){
 									R.push('linear');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1242,11 +1229,8 @@
 								if (L[3] == 1){
 									R.push('linear');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1268,11 +1252,8 @@
 								if (L[3] == 1){
 									R.push('linear');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1308,11 +1289,8 @@
 								if (L[3] == 1){
 									R.push('linear');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1334,11 +1312,8 @@
 								if (L[3] == 1){
 									R.push('linear');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1374,11 +1349,8 @@
 								if (L[1] == 1){
 									R.push('exponential');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1400,11 +1372,8 @@
 								if (L[1] == 1){
 									R.push('exponential');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
+								if (LISTE.length==5){
+									if (L[4] == 1){
 										R.push('quadratic');
 									};
 								};
@@ -1419,82 +1388,15 @@
 								
 					});
 					
-				$("input[type=checkbox][name=check_expopow]").change(function() {
-								
-								var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-								var num = assess_session.attributes[indice].numero;
-								
-								
-								
-								
-							var checked = document.getElementById('check_expopow').checked;
-							if(checked) {
-								
-								L[4]=1;
-								var R=['exponential-power'];
-								if (L[0] == 1){
-									R.push('logarithmic');
-								};
-								if (L[1] == 1){
-									R.push('exponential');
-								};
-								if (L[2] == 1){
-									R.push('power');
-								};
-								if (L[3] == 1){
-									R.push('linear');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
-										R.push('quadratic');
-									};
-								};
-								
-								$('#fonctions_choisies').show().empty();
-								addGraph2(num, data['data'], val_min, val_max,R);
-								
-							};
-							if(!checked) {
-								L[4]=0;
-								var R=[];
-
-								if (L[0] == 1){
-									R.push('logarithmic');
-								};
-								if (L[1] == 1){
-									R.push('exponential');
-								};
-								if (L[2] == 1){
-									R.push('power');
-								};
-								if (L[3] == 1){
-									R.push('linear');
-								};
-								if (LISTE.length==6){
-									if (L[5] == 1){
-										R.push('quadratic');
-									};
-								};
-								
-								$('#fonctions_choisies').show().empty();
-								addGraph2(num, data['data'], val_min, val_max,R);
-								
-							};
-							
-							localStorage.setItem("assess_session", JSON.stringify(assess_session));
-							
-								
-					});
 			
-			
-				if (LISTE.length==6){
+				if (LISTE.length==5){
 				$("input[type=checkbox][name=check_quad]").change(function() {
 					var assess_session = JSON.parse(localStorage.getItem("assess_session"));
 					var num = assess_session.attributes[indice].numero;
 					var checked = document.getElementById('check_quad').checked;
 							if(checked) {
 								
-								L[5]=1;
+								L[4]=1;
 								var R=['quadratic'];
 								if (L[0] == 1){
 									R.push('logarithmic');
@@ -1509,16 +1411,13 @@
 								if (L[1] == 1){
 									R.push('exponential');
 								};
-								if (L[4] == 1){
-									R.push('exponential-power');
-								};
 								
 								$('#fonctions_choisies').show().empty();
 								addGraph2(num, data['data'], val_min, val_max,R);
 								
 							};
 							if(!checked) {
-								L[5]=0;
+								L[4]=0;
 								var R=[];
 								
 								if (L[0] == 1){
@@ -1532,9 +1431,6 @@
 								};
 								if (L[1] == 1){
 									R.push('exponential');
-								};
-								if (L[4] == 1){
-									R.push('exponential-power');
 								};
 								
 								$('#fonctions_choisies').show().empty();
@@ -1591,11 +1487,10 @@
 					document.getElementById('check_exp').checked = true;
 					document.getElementById('check_pow').checked = true;
 					document.getElementById('check_lin').checked = true;
-					document.getElementById('check_expopow').checked = true;
-					if (LISTE.length==6){
+					if (LISTE.length==5){
 						document.getElementById('check_quad').checked = true;
 					};
-					L=[1,1,1,1,1,1];
+					L=[1,1,1,1,1];
 					addGraph2(Number(this.value), data['data'], val_min, val_max,LISTE);
 					if (choice != ''){
 						$('#main_graph').show().empty();
